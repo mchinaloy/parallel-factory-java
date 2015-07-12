@@ -27,7 +27,7 @@ public class Main implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         actorSystem = context.getBean(ActorSystem.class);
-        ActorRef componentFactory = actorSystem.actorOf(SpringExtProvider.get(actorSystem).props("componentFactory"), "componentFactory");
+        ActorRef componentFactory = actorSystem.actorOf(SpringExtProvider.get(actorSystem).props("carComponentFactory"), "carComponentFactory");
         componentFactory.tell(new StartProductionMessage(), null);
     }
 

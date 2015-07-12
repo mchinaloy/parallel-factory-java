@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import static carfactory.extension.SpringExtension.SpringExtProvider;
 
-@Named("componentFactory")
+@Named("carComponentFactory")
 @Scope("prototype")
 public class CarComponentFactory extends UntypedActor {
 
