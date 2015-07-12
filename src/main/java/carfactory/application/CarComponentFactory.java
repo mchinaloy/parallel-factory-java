@@ -22,25 +22,23 @@ import static carfactory.extension.SpringExtension.SpringExtProvider;
 
 @Named("componentFactory")
 @Scope("prototype")
-public class ComponentFactory extends UntypedActor {
+public class CarComponentFactory extends UntypedActor {
 
     @Inject
     private ApplicationContext context;
 
     private ActorSystem system;
-    private ActorRef wheelFilter;
-    private ActorRef engineFilter;
-    private ActorRef coachworkFilter;
+    private ActorRef carComponentFilterActor;
 
     @Override
     public void onReceive(Object message) throws Exception {
-        if(message instanceof CreateCoachworkMessage){
-            coachworkFilter.tell(new Coachwork("coachwork", UUID.randomUUID()), getSelf());
-        } else if(message instanceof CreateWheelMessage){
-            wheelFilter.tell(new Wheel("wheel", UUID.randomUUID()), getSelf());
-        } else if(message instanceof CreateEngineMessage){
-            engineFilter.tell(new Engine("engine", UUID.randomUUID()), getSelf());
-        } else{
+        if (message instanceof CreateCoachworkMessage) {
+            carComponentFilterActor.tell(new Coachwork("coachwork", UUID.randomUUID()), getSelf());
+        } else if (message instanceof CreateWheelMessage) {
+            carComponentFilterActor.tell(new Wheel("wheel", UUID.randomUUID()), getSelf());
+        } else if (message instanceof CreateEngineMessage) {
+            carComponentFilterActor.tell(new Engine("engine", UUID.randomUUID()), getSelf());
+        } else {
             system = context.getBean(ActorSystem.class);
             initializeActors();
             scheduleProduction();
@@ -48,6 +46,8 @@ public class ComponentFactory extends UntypedActor {
     }
 
     private void initializeActors() {
+        carComponentFilterActor = system.actorOf(SpringExtProvider.get(system).props("carComponentFilterActor"), "carComponentFilterActor");
+
         system.actorOf(SpringExtProvider.get(system).props("assembleActor"), "assembleActor");
         system.actorOf(SpringExtProvider.get(system).props("redPaintActor"), "redPaintActor");
         system.actorOf(SpringExtProvider.get(system).props("bluePaintActor"), "bluePaintActor");
@@ -55,11 +55,7 @@ public class ComponentFactory extends UntypedActor {
         system.actorOf(SpringExtProvider.get(system).props("mergeActor"), "mergeActor");
     }
 
-    private void scheduleProduction(){
-        wheelFilter = system.actorOf(SpringExtProvider.get(system).props("wheelFilterActor"), "wheelFilterActor");
-        engineFilter = system.actorOf(SpringExtProvider.get(system).props("engineFilterActor"), "engineFilterActor");
-        coachworkFilter = system.actorOf(SpringExtProvider.get(system).props("coachworkFilterActor"), "coachworkFilterActor");
-
+    private void scheduleProduction() {
         getContext().system().scheduler().schedule(Duration.create(0, TimeUnit.NANOSECONDS), Duration.create(0, TimeUnit.NANOSECONDS),
                 getSelf(), new CreateWheelMessage(), getContext().system().dispatcher(), getSelf());
         getContext().system().scheduler().schedule(Duration.create(0, TimeUnit.NANOSECONDS), Duration.create(0, TimeUnit.NANOSECONDS),

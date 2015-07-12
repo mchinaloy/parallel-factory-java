@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 public abstract class CarComponent {
 
-    private static int FAULTY_RATE = 2;
+    private static int FAULTY_RATE = -1;
 
     protected final String type;
     protected final UUID serialNumber;
