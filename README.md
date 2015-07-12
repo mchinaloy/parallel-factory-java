@@ -1,5 +1,4 @@
 # ParallelCarFactory
-===================
 
 This CarFactory implementation makes extensive use of Akka Actors to facilitate the passing of car components throughout each stage of the production line.
 
