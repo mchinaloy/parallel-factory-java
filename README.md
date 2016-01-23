@@ -9,10 +9,12 @@ This CarFactory implementation makes extensive use of Akka Actors to facilitate 
 5. Assembled cars are then sent to one of three paint actors by way of the Akka RoundRobinRouter
 6. Once the car is fully assembled and painted the results end up at the Merge actor that keeps track of the number of cars we are producing every 1 minute
 
-The technology stack is as follows -
+The solution uses Java 8 amongst the following -
 
-Akka | Java 8 | Spring Boot | Lombok | Gradle
-
+[Akka](http://akka.io/) /
+[Spring Boot](http://projects.spring.io/spring-boot/) /
+[Lombok](https://projectlombok.org/) /
+[Gradle](http://gradle.org/)
 
 Example Output
 ===================
